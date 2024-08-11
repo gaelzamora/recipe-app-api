@@ -1,5 +1,5 @@
 FROM python:3.9-alpine3.13
-LABEL maintainer="londonappdeveloper.com"
+LABEL maintainer="gaelzamora/recipe-app-api"
 
 ENV PYTHONUNBUFFERED=1
 ENV PATH="/py/bin:$PATH"
