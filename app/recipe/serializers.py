@@ -29,18 +29,19 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def _get_or_create_tags(self, tags, recipe):
         """Handle getting or creating tags as needed."""
-
-
-    def create(self, validated_data):
-        """Create a recipe."""
-        tags = validated_data.pop('tags', [])
-        recipe = Recipe.objects.create(**validated_data)
+        auth_user = self.context['request'].user
         for tag in tags:
             tag_obj, created = Tag.objects.get_or_create(
                 user=auth_user,
                 **tag,
             )
             recipe.tags.add(tag_obj)
+
+    def create(self, validated_data):
+        """Create a recipe."""
+        tags = validated_data.pop('tags', [])
+        recipe = Recipe.objects.create(**validated_data)
+        self._get_or_create_tags(tags, recipe)
 
         return recipe
     
